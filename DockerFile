@@ -1,27 +1,31 @@
-# Dockerfile
+# เลือก Python base image ที่เหมาะสม (slim version จะเล็กกว่า)
+# แนะนำให้ใช้เวอร์ชัน Python ที่คุณทดสอบบอทด้วย
+FROM python:3.10-slim-buster
 
-# 1. เลือก Python base image ที่ต้องการ
-FROM python:3.10-slim-buster 
-# python:3.10-slim-buster เป็น image ที่มีขนาดเล็กและมี Python 3.10 ติดตั้งไว้
+# ตั้งค่า Environment Variables (ถ้าจำเป็น)
+ENV PYTHONUNBUFFERED=1
 
-# 2. ตั้งค่า Working Directory ภายใน container
+# สร้างและกำหนด work directory ภายใน image
 WORKDIR /app
 
-# 3. คัดลอกไฟล์ requirements.txt (ถ้ามี) เพื่อติดตั้ง dependencies ก่อน
-# การทำเช่นนี้ช่วยให้ Docker cache layer นี้ได้ หาก requirements ไม่เปลี่ยนแปลง
-COPY requirements.txt ./
+# อัปเดต package list และติดตั้ง ffmpeg และ dependencies อื่นๆ ที่จำเป็น
+# การติดตั้ง build-essential และ libffi-dev อาจจำเป็นสำหรับบาง Python packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ffmpeg \
+    build-essential \
+    libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 4. ติดตั้ง Python dependencies
-# ตรวจสอบให้แน่ใจว่าคุณมีไฟล์ requirements.txt ที่ระบุ libraries ที่จำเป็น
-# เช่น discord.py, python-dotenv, yt-dlp, PyNaCl
+# คัดลอกไฟล์ requirements.txt เข้าไปใน image
+COPY requirements.txt .
+
+# ติดตั้ง Python packages จาก requirements.txt
+# การใช้ --no-cache-dir ช่วยลดขนาด image
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. คัดลอกไฟล์โค้ดทั้งหมดของโปรเจกต์เข้าไปใน WORKDIR (/app)
+# คัดลอกไฟล์โค้ดของบอททั้งหมด (ในที่นี้คือ main.py และไฟล์อื่นๆ ถ้ามี) เข้าไปใน work directory ของ image
 COPY . .
 
-# 6. (ถ้าจำเป็น) ติดตั้ง FFmpeg สำหรับ Music Bot
-# RUN apt-get update && apt-get install -y ffmpeg
-
-# 7. คำสั่งที่จะรันเมื่อ container เริ่มทำงาน
-# แทนที่ main_bot.py ด้วยชื่อไฟล์ Python หลักของบอทคุณ
-CMD ["python", "main_bot.py"]
+# คำสั่งที่จะรันเมื่อ container เริ่มทำงาน (รันบอทของคุณ)
+CMD ["python", "main.py"]
