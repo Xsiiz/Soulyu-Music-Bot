@@ -1,0 +1,7 @@
+# requirements.txt
+discord.py
+python-dotenv
+# เพิ่ม libraries อื่นๆ ที่บอทคุณใช้ เช่น
+# yt-dlp
+# PyNaCl
+# requests
