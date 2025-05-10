@@ -6,13 +6,14 @@ from discord.ext import commands
 import yt_dlp # ใช้ yt-dlp แทน youtube_dl เพราะมีการอัปเดตสม่ำเสมอ
 import asyncio
 import logging
+import os
 
 # ตั้งค่า logging เพื่อดู error (ถ้ามี)
 logging.basicConfig(level=logging.INFO)
 
 # Token ของบอทคุณ (สำคัญมาก: ให้เก็บเป็นความลับ)
 # แนะนำให้ใช้ environment variable หรือ config file ในการเก็บ token จริง
-BOT_TOKEN = "MTI5MzE0NDgwMjQ4NTA3NjAzOQ.GoYIYf.tG27UHQ8shyKZobMWGrLrN8U9EAt0iNlXHeonA" 
+BOT_TOKEN = os.environ.get('DISCORD_BOT_TOKEN')
 
 # ตั้งค่า Intents (สิทธิ์ที่บอทต้องการ)
 intents = discord.Intents.default()
