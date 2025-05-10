@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 # Token ของบอทคุณ (สำคัญมาก: ให้เก็บเป็นความลับ)
 # แนะนำให้ใช้ environment variable หรือ config file ในการเก็บ token จริง
-BOT_TOKEN = "MTI5MzE0NDgwMjQ4NTA3NjAzOQ.GCI0Q6.tvf9wDnauQgWC88qXv18zY_WRjQHGz0b_jRQqc" 
+BOT_TOKEN = "MTI5MzE0NDgwMjQ4NTA3NjAzOQ.GoYIYf.tG27UHQ8shyKZobMWGrLrN8U9EAt0iNlXHeonA" 
 
 # ตั้งค่า Intents (สิทธิ์ที่บอทต้องการ)
 intents = discord.Intents.default()
@@ -20,7 +20,7 @@ intents.message_content = True # จำเป็นสำหรับการ�
 intents.voice_states = True    # จำเป็นสำหรับการจัดการสถานะเสียง
 
 # Prefix ของคำสั่ง
-bot = commands.Bot(command_prefix="#", intents=intents) # <--- เปลี่ยน prefix ตรงนี้
+bot = commands.Bot(command_prefix="%", intents=intents) # <--- เปลี่ยน prefix ตรงนี้
 
 # การตั้งค่าสำหรับ yt-dlp และ ffmpeg
 YDL_OPTIONS = {
